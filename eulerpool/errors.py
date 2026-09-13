@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 class EulerpoolError(Exception):
     """Base exception for Eulerpool API errors."""
 
@@ -25,7 +27,7 @@ class NotFoundError(EulerpoolError):
 class RateLimitError(EulerpoolError):
     """Raised when rate limit is exceeded."""
 
-    def __init__(self, message: str = "Rate limit exceeded.", retry_after: int | None = None):
+    def __init__(self, message: str = "Rate limit exceeded.", retry_after=None):
         super().__init__(message, status=429, code="rate_limit_exceeded")
         self.retry_after = retry_after
 

@@ -1,118 +1,150 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Optional
 from urllib.parse import quote
 
 from ._base import AsyncResource, SyncResource
 
 
 class EquityExtended(SyncResource):
-    def aaqs(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/aaqs/{quote(isin)}")
-
-    def options_chain(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/options-chain/{quote(isin)}")
-
-    def technical_signals(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/technical-signals/{quote(isin)}")
-
-    def basic_financials(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/basic-financials/{quote(isin)}")
-
-    def ebitda_estimates(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/ebitda-estimates/{quote(isin)}")
-
-    def sec_filings(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/sec-filings/{quote(isin)}")
-
-    def earnings_calendar(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/earnings-calendar/{quote(isin)}")
-
-    def tech_indicators(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/tech-indicators/{quote(isin)}")
-
-    def price_target_history(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/price-target-history/{quote(isin)}")
-
-    def peers(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/peers/{quote(isin)}")
-
-    def short_interest(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/short-interest/{quote(isin)}")
-
-    def short_volume(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/short-volume/{quote(isin)}")
-
-    def index_history(self, symbol: str) -> Any:
-        return self._get(f"/equity-extended/index-history/{quote(symbol)}")
-
-    def market_news(self) -> Any:
-        return self._get("/equity-extended/market-news")
-
-    def symbol_changes(self) -> Any:
-        return self._get("/equity-extended/symbol-changes")
-
-    def isin_changes(self) -> Any:
-        return self._get("/equity-extended/isin-changes")
-
-    def financials_reported(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/financials-reported/{quote(isin)}")
-
-    def aggregate_signals(self, isin: str) -> Any:
-        return self._get(f"/equity-extended/aggregate-signals/{quote(isin)}")
+    def aaqs(self, identifier: str, **params: Any) -> Any:
+        """AAQS (Quality Score) API"""
+        return self._get(f"/equity-extended/aaqs/{quote(str(identifier))}", params)
+    def aggregate_signals(self, identifier: str, **params: Any) -> Any:
+        """Aggregate Technical Signals API"""
+        return self._get(f"/equity-extended/aggregate-signals/{quote(str(identifier))}", params)
+    def basic_financials(self, identifier: str, **params: Any) -> Any:
+        """Basic Financials (Key Ratios) API"""
+        return self._get(f"/equity-extended/basic-financials/{quote(str(identifier))}", params)
+    def corporate_events(self, ticker: str, **params: Any) -> Any:
+        """Corporate Events (8-K) API"""
+        return self._get(f"/equity-extended/corporate-events/{quote(str(ticker))}", params)
+    def earnings_calendar(self, identifier: str, **params: Any) -> Any:
+        """Earnings Calendar API"""
+        return self._get(f"/equity-extended/earnings-calendar/{quote(str(identifier))}", params)
+    def ebitda_estimates(self, identifier: str, **params: Any) -> Any:
+        """EBITDA Estimates API"""
+        return self._get(f"/equity-extended/ebitda-estimates/{quote(str(identifier))}", params)
+    def financials_reported(self, identifier: str, **params: Any) -> Any:
+        """As-Reported Financials API"""
+        return self._get(f"/equity-extended/financials-reported/{quote(str(identifier))}", params)
+    def index_history(self, symbol: str, **params: Any) -> Any:
+        """Index Historical Constituents API"""
+        return self._get(f"/equity-extended/index-history/{quote(str(symbol))}", params)
+    def isin_changes(self, **params: Any) -> Any:
+        """ISIN Change History API"""
+        return self._get("/equity-extended/isin-changes", params)
+    def market_news(self, **params: Any) -> Any:
+        """Market News API"""
+        return self._get("/equity-extended/market-news", params)
+    def options_chain(self, identifier: str, **params: Any) -> Any:
+        """Options Chain API"""
+        return self._get(f"/equity-extended/options-chain/{quote(str(identifier))}", params)
+    def peers(self, identifier: str, **params: Any) -> Any:
+        """Company Peers API"""
+        return self._get(f"/equity-extended/peers/{quote(str(identifier))}", params)
+    def price_target_history(self, identifier: str, **params: Any) -> Any:
+        """Price Target History API"""
+        return self._get(f"/equity-extended/price-target-history/{quote(str(identifier))}", params)
+    def sec_company(self, ticker: str, **params: Any) -> Any:
+        """SEC Company Info API"""
+        return self._get(f"/equity-extended/sec-company/{quote(str(ticker))}", params)
+    def sec_filings(self, identifier: str, **params: Any) -> Any:
+        """SEC Filings API"""
+        return self._get(f"/equity-extended/sec-filings/{quote(str(identifier))}", params)
+    def short_interest(self, identifier: str, **params: Any) -> Any:
+        """Short Interest API"""
+        return self._get(f"/equity-extended/short-interest/{quote(str(identifier))}", params)
+    def short_volume(self, identifier: str, **params: Any) -> Any:
+        """Short Volume API"""
+        return self._get(f"/equity-extended/short-volume/{quote(str(identifier))}", params)
+    def supply_chain(self, ticker: str, **params: Any) -> Any:
+        """Supply Chain Relationships API"""
+        return self._get(f"/equity-extended/supply-chain/{quote(str(ticker))}", params)
+    def symbol_changes(self, **params: Any) -> Any:
+        """Symbol Change History API"""
+        return self._get("/equity-extended/symbol-changes", params)
+    def tech_indicators(self, identifier: str, **params: Any) -> Any:
+        """Technical Indicators Time Series API"""
+        return self._get(f"/equity-extended/tech-indicators/{quote(str(identifier))}", params)
+    def technical_signals(self, identifier: str, **params: Any) -> Any:
+        """Technical Signals API"""
+        return self._get(f"/equity-extended/technical-signals/{quote(str(identifier))}", params)
+    def xbrl_fact(self, ticker: str, tag: str, **params: Any) -> Any:
+        """XBRL Fact Time Series API"""
+        return self._get(f"/equity-extended/xbrl/fact/{quote(str(ticker))}/{quote(str(tag))}", params)
+    def xbrl_facts(self, ticker: str, **params: Any) -> Any:
+        """SEC XBRL Facts API"""
+        return self._get(f"/equity-extended/xbrl/facts/{quote(str(ticker))}", params)
 
 
 class AsyncEquityExtended(AsyncResource):
-    async def aaqs(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/aaqs/{quote(isin)}")
-
-    async def options_chain(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/options-chain/{quote(isin)}")
-
-    async def technical_signals(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/technical-signals/{quote(isin)}")
-
-    async def basic_financials(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/basic-financials/{quote(isin)}")
-
-    async def ebitda_estimates(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/ebitda-estimates/{quote(isin)}")
-
-    async def sec_filings(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/sec-filings/{quote(isin)}")
-
-    async def earnings_calendar(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/earnings-calendar/{quote(isin)}")
-
-    async def tech_indicators(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/tech-indicators/{quote(isin)}")
-
-    async def price_target_history(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/price-target-history/{quote(isin)}")
-
-    async def peers(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/peers/{quote(isin)}")
-
-    async def short_interest(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/short-interest/{quote(isin)}")
-
-    async def short_volume(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/short-volume/{quote(isin)}")
-
-    async def index_history(self, symbol: str) -> Any:
-        return await self._get(f"/equity-extended/index-history/{quote(symbol)}")
-
-    async def market_news(self) -> Any:
-        return await self._get("/equity-extended/market-news")
-
-    async def symbol_changes(self) -> Any:
-        return await self._get("/equity-extended/symbol-changes")
-
-    async def isin_changes(self) -> Any:
-        return await self._get("/equity-extended/isin-changes")
-
-    async def financials_reported(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/financials-reported/{quote(isin)}")
-
-    async def aggregate_signals(self, isin: str) -> Any:
-        return await self._get(f"/equity-extended/aggregate-signals/{quote(isin)}")
+    async def aaqs(self, identifier: str, **params: Any) -> Any:
+        """AAQS (Quality Score) API"""
+        return await self._get(f"/equity-extended/aaqs/{quote(str(identifier))}", params)
+    async def aggregate_signals(self, identifier: str, **params: Any) -> Any:
+        """Aggregate Technical Signals API"""
+        return await self._get(f"/equity-extended/aggregate-signals/{quote(str(identifier))}", params)
+    async def basic_financials(self, identifier: str, **params: Any) -> Any:
+        """Basic Financials (Key Ratios) API"""
+        return await self._get(f"/equity-extended/basic-financials/{quote(str(identifier))}", params)
+    async def corporate_events(self, ticker: str, **params: Any) -> Any:
+        """Corporate Events (8-K) API"""
+        return await self._get(f"/equity-extended/corporate-events/{quote(str(ticker))}", params)
+    async def earnings_calendar(self, identifier: str, **params: Any) -> Any:
+        """Earnings Calendar API"""
+        return await self._get(f"/equity-extended/earnings-calendar/{quote(str(identifier))}", params)
+    async def ebitda_estimates(self, identifier: str, **params: Any) -> Any:
+        """EBITDA Estimates API"""
+        return await self._get(f"/equity-extended/ebitda-estimates/{quote(str(identifier))}", params)
+    async def financials_reported(self, identifier: str, **params: Any) -> Any:
+        """As-Reported Financials API"""
+        return await self._get(f"/equity-extended/financials-reported/{quote(str(identifier))}", params)
+    async def index_history(self, symbol: str, **params: Any) -> Any:
+        """Index Historical Constituents API"""
+        return await self._get(f"/equity-extended/index-history/{quote(str(symbol))}", params)
+    async def isin_changes(self, **params: Any) -> Any:
+        """ISIN Change History API"""
+        return await self._get("/equity-extended/isin-changes", params)
+    async def market_news(self, **params: Any) -> Any:
+        """Market News API"""
+        return await self._get("/equity-extended/market-news", params)
+    async def options_chain(self, identifier: str, **params: Any) -> Any:
+        """Options Chain API"""
+        return await self._get(f"/equity-extended/options-chain/{quote(str(identifier))}", params)
+    async def peers(self, identifier: str, **params: Any) -> Any:
+        """Company Peers API"""
+        return await self._get(f"/equity-extended/peers/{quote(str(identifier))}", params)
+    async def price_target_history(self, identifier: str, **params: Any) -> Any:
+        """Price Target History API"""
+        return await self._get(f"/equity-extended/price-target-history/{quote(str(identifier))}", params)
+    async def sec_company(self, ticker: str, **params: Any) -> Any:
+        """SEC Company Info API"""
+        return await self._get(f"/equity-extended/sec-company/{quote(str(ticker))}", params)
+    async def sec_filings(self, identifier: str, **params: Any) -> Any:
+        """SEC Filings API"""
+        return await self._get(f"/equity-extended/sec-filings/{quote(str(identifier))}", params)
+    async def short_interest(self, identifier: str, **params: Any) -> Any:
+        """Short Interest API"""
+        return await self._get(f"/equity-extended/short-interest/{quote(str(identifier))}", params)
+    async def short_volume(self, identifier: str, **params: Any) -> Any:
+        """Short Volume API"""
+        return await self._get(f"/equity-extended/short-volume/{quote(str(identifier))}", params)
+    async def supply_chain(self, ticker: str, **params: Any) -> Any:
+        """Supply Chain Relationships API"""
+        return await self._get(f"/equity-extended/supply-chain/{quote(str(ticker))}", params)
+    async def symbol_changes(self, **params: Any) -> Any:
+        """Symbol Change History API"""
+        return await self._get("/equity-extended/symbol-changes", params)
+    async def tech_indicators(self, identifier: str, **params: Any) -> Any:
+        """Technical Indicators Time Series API"""
+        return await self._get(f"/equity-extended/tech-indicators/{quote(str(identifier))}", params)
+    async def technical_signals(self, identifier: str, **params: Any) -> Any:
+        """Technical Signals API"""
+        return await self._get(f"/equity-extended/technical-signals/{quote(str(identifier))}", params)
+    async def xbrl_fact(self, ticker: str, tag: str, **params: Any) -> Any:
+        """XBRL Fact Time Series API"""
+        return await self._get(f"/equity-extended/xbrl/fact/{quote(str(ticker))}/{quote(str(tag))}", params)
+    async def xbrl_facts(self, ticker: str, **params: Any) -> Any:
+        """SEC XBRL Facts API"""
+        return await self._get(f"/equity-extended/xbrl/facts/{quote(str(ticker))}", params)

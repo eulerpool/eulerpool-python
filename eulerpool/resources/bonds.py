@@ -1,40 +1,36 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Optional
 from urllib.parse import quote
 
 from ._base import AsyncResource, SyncResource
 
 
 class Bonds(SyncResource):
-    def profile(self, isin: str) -> Any:
-        return self._get(f"/bonds/profile/{quote(isin)}")
-
-    def prices(self, isin: str) -> Any:
-        return self._get(f"/bonds/prices/{quote(isin)}")
-
-    def yield_curve(self) -> Any:
-        return self._get("/bonds/yield-curve")
-
-    def list(self) -> Any:
-        return self._get("/bonds/list")
-
-    def ticks(self, identifier: str) -> Any:
-        return self._get(f"/bonds/ticks/{quote(identifier)}")
+    def list(self, **params: Any) -> Any:
+        """Bond List / Search API"""
+        return self._get("/bonds/list", params)
+    def prices(self, identifier: str, **params: Any) -> Any:
+        return self._get(f"/bonds/prices/{quote(str(identifier))}", params)
+    def profile(self, identifier: str, **params: Any) -> Any:
+        return self._get(f"/bonds/profile/{quote(str(identifier))}", params)
+    def ticks(self, identifier: str, **params: Any) -> Any:
+        return self._get(f"/bonds/ticks/{quote(str(identifier))}", params)
+    def yield_curve(self, **params: Any) -> Any:
+        """Government Bond Yield Curve API"""
+        return self._get("/bonds/yield-curve", params)
 
 
 class AsyncBonds(AsyncResource):
-    async def profile(self, isin: str) -> Any:
-        return await self._get(f"/bonds/profile/{quote(isin)}")
-
-    async def prices(self, isin: str) -> Any:
-        return await self._get(f"/bonds/prices/{quote(isin)}")
-
-    async def yield_curve(self) -> Any:
-        return await self._get("/bonds/yield-curve")
-
-    async def list(self) -> Any:
-        return await self._get("/bonds/list")
-
-    async def ticks(self, identifier: str) -> Any:
-        return await self._get(f"/bonds/ticks/{quote(identifier)}")
+    async def list(self, **params: Any) -> Any:
+        """Bond List / Search API"""
+        return await self._get("/bonds/list", params)
+    async def prices(self, identifier: str, **params: Any) -> Any:
+        return await self._get(f"/bonds/prices/{quote(str(identifier))}", params)
+    async def profile(self, identifier: str, **params: Any) -> Any:
+        return await self._get(f"/bonds/profile/{quote(str(identifier))}", params)
+    async def ticks(self, identifier: str, **params: Any) -> Any:
+        return await self._get(f"/bonds/ticks/{quote(str(identifier))}", params)
+    async def yield_curve(self, **params: Any) -> Any:
+        """Government Bond Yield Curve API"""
+        return await self._get("/bonds/yield-curve", params)

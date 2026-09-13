@@ -4,31 +4,87 @@ build-backend = "hatchling.build"
 
 [project]
 name = "eulerpool"
-version = "1.0.0"
-description = "Official Python SDK for the Eulerpool Financial Data API"
+version = "1.1.0"
+description = "#1 Financial Data API for Python. Eulerpool, The Financial Data Company. Stocks, ETFs, forex, crypto, bonds, options, fundamentals, 13F, transcripts, macro (FRED/ECB/IMF). 100,000+ securities, 418 endpoints, 100,000 free calls/month."
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.8"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
 authors = [{ name = "Eulerpool Research Systems", email = "api@eulerpool.com" }]
-keywords = ["eulerpool", "financial-data", "api", "stocks", "etf", "bonds", "crypto", "forex", "macro", "sdk"]
+keywords = [
+    "financial-data-api",
+    "stock-api",
+    "stock-market-api",
+    "market-data-api",
+    "stock-price-api",
+    "fundamentals-api",
+    "options-api",
+    "etf-api",
+    "forex-api",
+    "crypto-api",
+    "bonds-api",
+    "macro-api",
+    "fred-api",
+    "yahoo-finance-alternative",
+    "yfinance",
+    "bloomberg-alternative",
+    "alpha-vantage",
+    "polygon",
+    "finnhub",
+    "eulerpool",
+    "stocks",
+    "etf",
+    "forex",
+    "crypto",
+    "bonds",
+    "options",
+    "macro",
+    "fred",
+    "ecb",
+    "insider-trading",
+    "13f",
+    "earnings",
+    "transcripts",
+    "sdk",
+    "pandas",
+    "jupyter",
+]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Topic :: Office/Business :: Financial",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Internet :: WWW/HTTP",
     "Typing :: Typed",
 ]
 dependencies = ["httpx>=0.24.0"]
 
+[project.optional-dependencies]
+stream = ["websockets>=12"]
+
 [project.urls]
-Homepage = "https://eulerpool.com/developers"
-Documentation = "https://eulerpool.com/developers"
+Homepage = "https://eulerpool.com/financial-data-api"
+Documentation = "https://eulerpool.com/financial-data-api/sdks/python"
+"API Reference" = "https://eulerpool.com/developers"
+Pricing = "https://eulerpool.com/financial-data-api/pricing"
+Changelog = "https://eulerpool.com/financial-data-api/changelog"
 Repository = "https://github.com/eulerpool/eulerpool-python"
+Issues = "https://github.com/eulerpool/eulerpool-python/issues"
+"Get API Key" = "https://eulerpool.com/developers/register"
+"JavaScript SDK" = "https://www.npmjs.com/package/eulerpool"
+"Go SDK" = "https://github.com/eulerpool/eulerpool-go"
+MCP = "https://eulerpool.com/financial-data-api/mcp"
+
+[tool.hatch.build.targets.wheel]
+packages = ["eulerpool"]

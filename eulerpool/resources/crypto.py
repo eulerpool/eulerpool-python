@@ -1,28 +1,30 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Optional
 from urllib.parse import quote
 
 from ._base import AsyncResource, SyncResource
 
 
 class Crypto(SyncResource):
-    def list(self, start: int, end: int) -> Any:
-        return self._get(f"/crypto/list/{start}/{end}")
-
-    def profile(self, symbol: str) -> Any:
-        return self._get(f"/crypto/profile/{quote(symbol)}")
-
-    def quotes(self, identifier: str) -> Any:
-        return self._get(f"/crypto/quotes/{quote(identifier)}")
+    def list(self, start: str, end: str, **params: Any) -> Any:
+        """Crypto List (Paginated) API"""
+        return self._get(f"/crypto/list/{quote(str(start))}/{quote(str(end))}", params)
+    def profile(self, symbol: str, **params: Any) -> Any:
+        """Crypto Profile API"""
+        return self._get(f"/crypto/profile/{quote(str(symbol))}", params)
+    def quotes(self, identifier: str, **params: Any) -> Any:
+        """Crypto Quotes API"""
+        return self._get(f"/crypto/quotes/{quote(str(identifier))}", params)
 
 
 class AsyncCrypto(AsyncResource):
-    async def list(self, start: int, end: int) -> Any:
-        return await self._get(f"/crypto/list/{start}/{end}")
-
-    async def profile(self, symbol: str) -> Any:
-        return await self._get(f"/crypto/profile/{quote(symbol)}")
-
-    async def quotes(self, identifier: str) -> Any:
-        return await self._get(f"/crypto/quotes/{quote(identifier)}")
+    async def list(self, start: str, end: str, **params: Any) -> Any:
+        """Crypto List (Paginated) API"""
+        return await self._get(f"/crypto/list/{quote(str(start))}/{quote(str(end))}", params)
+    async def profile(self, symbol: str, **params: Any) -> Any:
+        """Crypto Profile API"""
+        return await self._get(f"/crypto/profile/{quote(str(symbol))}", params)
+    async def quotes(self, identifier: str, **params: Any) -> Any:
+        """Crypto Quotes API"""
+        return await self._get(f"/crypto/quotes/{quote(str(identifier))}", params)

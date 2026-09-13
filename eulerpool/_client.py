@@ -5,6 +5,7 @@ from typing import Any, Dict, Optional
 
 import httpx
 
+from ._version import __version__
 from .errors import (
     AuthenticationError,
     BadRequestError,
@@ -13,6 +14,19 @@ from .errors import (
     RateLimitError,
     ServerError,
 )
+
+_PARAM_ALIASES = {"from_": "from", "class_": "class", "global_": "global"}
+
+
+def _normalize_params(params: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    q: Dict[str, Any] = {}
+    if not params:
+        return q
+    for key, value in params.items():
+        if value is None:
+            continue
+        q[_PARAM_ALIASES.get(key, key)] = value
+    return q
 
 
 class HttpClient:
@@ -33,13 +47,31 @@ class HttpClient:
         self._base_url = (base_url or self._BASE_URL).rstrip("/")
         self._use_auth_header = use_auth_header
         self._max_retries = max_retries
-        self._http = httpx.Client(timeout=timeout, headers={"Accept": "application/json"})
+        self._http = httpx.Client(
+            timeout=timeout,
+            follow_redirects=True,
+            headers={
+                "Accept": "application/json",
+                "User-Agent": f"eulerpool-python/{__version__}",
+            },
+        )
+
+    @property
+    def api_key(self) -> str:
+        return self._api_key
+
+    @property
+    def base_url(self) -> str:
+        return self._base_url
 
     def get(self, path: str, params: Optional[Dict[str, Any]] = None) -> Any:
         return self._request("GET", path, params=params)
 
     def post(self, path: str, body: Any = None, params: Optional[Dict[str, Any]] = None) -> Any:
         return self._request("POST", path, params=params, json_body=body)
+
+    def delete(self, path: str, params: Optional[Dict[str, Any]] = None) -> Any:
+        return self._request("DELETE", path, params=params)
 
     def close(self) -> None:
         self._http.close()
@@ -49,8 +81,6 @@ class HttpClient:
 
     def __exit__(self, *exc: Any) -> None:
         self.close()
-
-    # ------------------------------------------------------------------
 
     def _request(
         self,
@@ -62,9 +92,9 @@ class HttpClient:
     ) -> Any:
         url = f"{self._base_url}{path}"
         query = self._build_query(params)
-        headers: Dict[str, str] = {}
-        if self._use_auth_header:
-            headers["Authorization"] = f"Bearer {self._api_key}"
+        headers: Dict[str, str] = {
+            "Authorization": f"Bearer {self._api_key}",
+        }
 
         last_exc: Optional[Exception] = None
         for attempt in range(self._max_retries + 1):
@@ -79,7 +109,12 @@ class HttpClient:
                     headers=headers,
                 )
                 if resp.is_success:
-                    return resp.json()
+                    if not resp.content:
+                        return None
+                    try:
+                        return resp.json()
+                    except Exception:
+                        return resp.text
                 error = self._make_error(resp)
                 if not self._is_retryable(resp.status_code):
                     raise error
@@ -95,8 +130,7 @@ class HttpClient:
         q: Dict[str, Any] = {}
         if not self._use_auth_header:
             q["token"] = self._api_key
-        if params:
-            q.update({k: v for k, v in params.items() if v is not None})
+        q.update(_normalize_params(params))
         return q
 
     @staticmethod
@@ -143,13 +177,31 @@ class AsyncHttpClient:
         self._base_url = (base_url or self._BASE_URL).rstrip("/")
         self._use_auth_header = use_auth_header
         self._max_retries = max_retries
-        self._http = httpx.AsyncClient(timeout=timeout, headers={"Accept": "application/json"})
+        self._http = httpx.AsyncClient(
+            timeout=timeout,
+            follow_redirects=True,
+            headers={
+                "Accept": "application/json",
+                "User-Agent": f"eulerpool-python/{__version__}",
+            },
+        )
+
+    @property
+    def api_key(self) -> str:
+        return self._api_key
+
+    @property
+    def base_url(self) -> str:
+        return self._base_url
 
     async def get(self, path: str, params: Optional[Dict[str, Any]] = None) -> Any:
         return await self._request("GET", path, params=params)
 
     async def post(self, path: str, body: Any = None, params: Optional[Dict[str, Any]] = None) -> Any:
         return await self._request("POST", path, params=params, json_body=body)
+
+    async def delete(self, path: str, params: Optional[Dict[str, Any]] = None) -> Any:
+        return await self._request("DELETE", path, params=params)
 
     async def close(self) -> None:
         await self._http.aclose()
@@ -159,8 +211,6 @@ class AsyncHttpClient:
 
     async def __aexit__(self, *exc: Any) -> None:
         await self.close()
-
-    # ------------------------------------------------------------------
 
     async def _request(
         self,
@@ -174,9 +224,9 @@ class AsyncHttpClient:
 
         url = f"{self._base_url}{path}"
         query = self._build_query(params)
-        headers: Dict[str, str] = {}
-        if self._use_auth_header:
-            headers["Authorization"] = f"Bearer {self._api_key}"
+        headers: Dict[str, str] = {
+            "Authorization": f"Bearer {self._api_key}",
+        }
 
         last_exc: Optional[Exception] = None
         for attempt in range(self._max_retries + 1):
@@ -191,7 +241,12 @@ class AsyncHttpClient:
                     headers=headers,
                 )
                 if resp.is_success:
-                    return resp.json()
+                    if not resp.content:
+                        return None
+                    try:
+                        return resp.json()
+                    except Exception:
+                        return resp.text
                 error = HttpClient._make_error(resp)
                 if not HttpClient._is_retryable(resp.status_code):
                     raise error
@@ -207,6 +262,5 @@ class AsyncHttpClient:
         q: Dict[str, Any] = {}
         if not self._use_auth_header:
             q["token"] = self._api_key
-        if params:
-            q.update({k: v for k, v in params.items() if v is not None})
+        q.update(_normalize_params(params))
         return q

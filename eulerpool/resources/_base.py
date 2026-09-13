@@ -16,6 +16,9 @@ class SyncResource:
     def _post(self, path: str, body: Any = None, params: Optional[Dict[str, Any]] = None) -> Any:
         return self._client.post(path, body, params)
 
+    def _delete(self, path: str, params: Optional[Dict[str, Any]] = None) -> Any:
+        return self._client.delete(path, params)
+
 
 class AsyncResource:
     def __init__(self, client: "AsyncHttpClient") -> None:
@@ -26,3 +29,6 @@ class AsyncResource:
 
     async def _post(self, path: str, body: Any = None, params: Optional[Dict[str, Any]] = None) -> Any:
         return await self._client.post(path, body, params)
+
+    async def _delete(self, path: str, params: Optional[Dict[str, Any]] = None) -> Any:
+        return await self._client.delete(path, params)
